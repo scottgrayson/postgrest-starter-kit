@@ -16,6 +16,16 @@ COPY data.users (id,name,email,"password") FROM STDIN (FREEZE ON);
 2	bob	bob@email.com	pass
 \.
 -- 
+-- fill table data.channels (6)
+\echo # filling table data.channels (6)
+COPY data.channels (id,name,owner_id) FROM STDIN (FREEZE ON);
+1	channel_1	1
+2	channel_2	1
+3	channel_3	1
+4	channel_4	2
+5	channel_5	2
+6	channel_6	2
+\.
 -- fill table data.items (6)
 \echo # filling table data.items (6)
 COPY data.items (id,name,private,owner_id) FROM STDIN (FREEZE ON);
@@ -47,9 +57,11 @@ COPY data.subitems (id,name,item_id,owner_id) FROM STDIN (FREEZE ON);
 -- restart sequences
 ALTER SEQUENCE data.users_id_seq RESTART WITH 3;
 ALTER SEQUENCE data.items_id_seq RESTART WITH 7;
+ALTER SEQUENCE data.channels_id_seq RESTART WITH 7;
 ALTER SEQUENCE data.subitems_id_seq RESTART WITH 13;
 -- 
 -- analyze modified tables
 ANALYZE data.users;
 ANALYZE data.items;
+ANALYZE data.channels;
 ANALYZE data.subitems;

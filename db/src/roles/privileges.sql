@@ -79,4 +79,29 @@ with check (
 grant select, insert, update, delete on api.subitems to webuser;
 grant select on api.subitems to anonymous;
 -------------------------------------------------------------------------------
+-- channels
+-- give access to the view owner to this table
+grant select, insert, update, delete on data.channels to api;
+grant usage on data.channels_id_seq to webuser;
+-- define the RLS policy
+create policy channels_access_policy on data.channels to api 
+using (
+	-- the authenticated users can see all his channels
+	-- notice how the rule changes based on the current user id
+	-- which is specific to each individual request
+	(request.user_role() = 'webuser' and request.user_id() = owner_id)
 
+	or
+	-- everyone can see public channels
+	(private = false)
+)
+with check (
+	-- authenticated users can only update/delete their channels
+	(request.user_role() = 'webuser' and request.user_id() = owner_id)
+);
+
+-- While grants to the view owner and the RLS policy on the underlying table 
+-- takes care of what rows the view can see, we still need to define what 
+-- are the rights of our application user in regard to this api view.
+grant select, insert, update, delete on api.channels to webuser;
+grant select on api.channels to anonymous;
