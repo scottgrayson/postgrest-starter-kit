@@ -10,6 +10,7 @@ create role api;
 
 \ir me.sql
 \ir items.sql
+\ir channels.sql
 \ir subitems.sql
 \ir signup.sql
 \ir login.sql
