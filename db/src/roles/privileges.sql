@@ -91,9 +91,6 @@ using (
 	-- which is specific to each individual request
 	(request.user_role() = 'webuser' and request.user_id() = owner_id)
 
-	or
-	-- everyone can see public channels
-	(private = false)
 )
 with check (
 	-- authenticated users can only update/delete their channels
